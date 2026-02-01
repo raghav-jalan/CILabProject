@@ -34,20 +34,6 @@ pipeline {
                 bat 'mvn package -DskipTests'
             }
         }
-        
-        stage('Docker Build') {
-            steps {
-                echo 'Building Docker image...'
-                bat 'docker build -t calculator-app:latest -f docker/Dockerfile .'
-            }
-        }
-        
-        stage('Deploy') {
-            steps {
-                echo 'Deploying application...'
-                bat 'scripts\\build.bat'
-            }
-        }
     }
     
     post {
