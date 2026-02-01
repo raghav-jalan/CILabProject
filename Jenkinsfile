@@ -1,21 +1,15 @@
 pipeline {
     agent any
-    
+
     stages {
-        stage('Checkout') {
-            steps {
-                echo 'Checking out source code...'
-                checkout scm
-            }
-        }
-        
+
         stage('Build') {
             steps {
                 echo 'Building the project...'
                 bat 'mvn clean compile'
             }
         }
-        
+
         stage('Test') {
             steps {
                 echo 'Running tests...'
@@ -23,11 +17,11 @@ pipeline {
             }
             post {
                 always {
-                    junit '**/target/surefire-reports/*.xml'
+                    junit 'target/surefire-reports/*.xml'
                 }
             }
         }
-        
+
         stage('Package') {
             steps {
                 echo 'Packaging the application...'
@@ -35,11 +29,11 @@ pipeline {
             }
         }
     }
-    
+
     post {
         success {
             echo 'Pipeline executed successfully!'
-            archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: false
+            archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
         }
         failure {
             echo 'Pipeline failed!'
